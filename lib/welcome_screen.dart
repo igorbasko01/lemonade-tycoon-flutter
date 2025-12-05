@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'game_menu_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -20,8 +21,11 @@ class WelcomeScreen extends StatelessWidget {
             const SizedBox(height: 48),
             ElevatedButton(
               onPressed: () {
-                // TODO: Navigate to game screen
-                print('Start Game pressed');
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const GameMenuScreen(),
+                  ),
+                );
               },
               child: const Text('Start Game'),
             ),
