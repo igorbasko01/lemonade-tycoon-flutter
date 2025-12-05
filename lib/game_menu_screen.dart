@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'view_models/game_view_model.dart';
 
 class GameMenuScreen extends StatelessWidget {
   const GameMenuScreen({super.key});
@@ -13,6 +15,15 @@ class GameMenuScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Consumer<GameViewModel>(
+              builder: (context, viewModel, child) {
+                return Text(
+                  'Balance: \$${viewModel.balance.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                );
+              },
+            ),
+            const SizedBox(height: 48),
             ElevatedButton(
               onPressed: () {
                 // TODO: Implement Buy Ingredients

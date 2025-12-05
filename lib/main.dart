@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'view_models/game_view_model.dart';
 import 'welcome_screen.dart';
 
 void main() {
@@ -10,13 +12,16 @@ class LemonadeTycoonApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Lemonade Tycoon',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => GameViewModel(),
+      child: MaterialApp(
+        title: 'Lemonade Tycoon',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
+          useMaterial3: true,
+        ),
+        home: const WelcomeScreen(),
       ),
-      home: const WelcomeScreen(),
     );
   }
 }
