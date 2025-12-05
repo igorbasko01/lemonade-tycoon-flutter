@@ -107,5 +107,36 @@ void main() {
       expect(shop.wallet.balance, 49.0); // 50 - 1.0
       expect(supplier.wallet.balance, 1.0);
     });
+    test('buyForShop uses external fundsSource if provided', () {
+      final supplier = Shop(
+        inventory: Inventory(ingredients: {Ingredients.lemon: 10}),
+        wallet: Wallet(0),
+        prices: {Ingredients.lemon: 2.0},
+      );
+      
+      final playerWallet = Wallet(10.0);
+      final shopWallet = Wallet(0.0);
+      
+      final shop = Shop(
+        inventory: Inventory(ingredients: {}),
+        wallet: shopWallet,
+        prices: {},
+      );
+      
+      final playerWithWallet = Player(name: 'Rich', wallet: playerWallet);
+      playerWithWallet.addShop(shop);
+      
+      final result = playerWithWallet.buyForShop(
+        supplier: supplier, 
+        targetShop: shop, 
+        item: IngredientAmount(ingredient: Ingredients.lemon, amount: 1),
+        fundsSource: playerWallet,
+      );
+      
+      expect(result, ShopTransactionResult.success);
+      expect(playerWallet.balance, 8.0); // 10 - 2
+      expect(shopWallet.balance, 0.0); // Untouched
+      expect(shop.inventory.ingredients[Ingredients.lemon], 1);
+    });
   });
 }

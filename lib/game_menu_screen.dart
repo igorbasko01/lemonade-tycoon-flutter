@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'buy_ingredients_screen.dart';
 import 'view_models/game_view_model.dart';
 
 class GameMenuScreen extends StatelessWidget {
@@ -26,7 +27,11 @@ class GameMenuScreen extends StatelessWidget {
             const SizedBox(height: 48),
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement Buy Ingredients
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const BuyIngredientsScreen(),
+                  ),
+                );
               },
               child: const Text('Buy Ingredients'),
             ),

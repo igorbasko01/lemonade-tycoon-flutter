@@ -42,10 +42,11 @@ class Player {
     required Shop supplier,
     required Shop targetShop,
     required IngredientAmount item,
+    Wallet? fundsSource,
   }) {
     return supplier.buy(
       item: item,
-      buyerWallet: targetShop.wallet,
+      buyerWallet: fundsSource ?? targetShop.wallet,
       buyerInventory: targetShop.inventory,
     );
   }
