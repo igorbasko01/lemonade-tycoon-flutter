@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/ingredients.dart';
 import '../models/inventory.dart';
 import '../models/player.dart';
+import '../models/recipes.dart';
 import '../models/shop.dart';
 import '../models/wallet.dart';
 
@@ -58,6 +59,23 @@ class GameViewModel extends ChangeNotifier {
   // Based on init above, player should have a shop.
   Map<Ingredient, int> get playerInventory => 
       _player.shops.isNotEmpty ? _player.shops.first.inventory.ingredients : {};
+
+  List<Recipe> get recipes => Recipes.all;
+
+  bool canPrepare(Recipe recipe) {
+    if (_player.shops.isEmpty) return false;
+    final shop = _player.shops.first;
+    return recipe.canPrepare(shop.inventory);
+  }
+
+  void prepare(Recipe recipe) {
+    if (_player.shops.isEmpty) return;
+    
+    // We assume production happens in the main shop for now
+    if (_player.produce(recipe, _player.shops.first)) {
+      notifyListeners();
+    }
+  }
 
   void buyIngredient(Ingredient ingredient) {
     if (_player.shops.isEmpty) return;

@@ -12,8 +12,7 @@ class Recipe {
     required this.outputIngredient,
   });
 
-  bool prepare(Inventory inventory) {
-    // Check if we have enough ingredients
+  bool canPrepare(Inventory inventory) {
     for (var ingredientAmount in requiredIngredients) {
       if (inventory.hasIngredient(
             ingredientAmount.ingredient,
@@ -22,6 +21,13 @@ class Recipe {
           HasIngredientResult.found) {
         return false;
       }
+    }
+    return true;
+  }
+
+  bool prepare(Inventory inventory) {
+    if (!canPrepare(inventory)) {
+      return false;
     }
 
     // Consume ingredients
@@ -37,4 +43,43 @@ class Recipe {
 
     return true;
   }
+}
+
+class Recipes {
+  static final Recipe sweetLemonade = Recipe(
+    name: 'Sweet Lemonade',
+    requiredIngredients: [
+      IngredientAmount(ingredient: Ingredients.lemon, amount: 1),
+      IngredientAmount(ingredient: Ingredients.sugar, amount: 4),
+      IngredientAmount(ingredient: Ingredients.water, amount: 1),
+    ],
+    outputIngredient: Ingredient(name: 'Sweet Lemonade Pitcher'),
+  );
+
+  static final Recipe mildLemonade = Recipe(
+    name: 'Mild Lemonade',
+    requiredIngredients: [
+      IngredientAmount(ingredient: Ingredients.lemon, amount: 2),
+      IngredientAmount(ingredient: Ingredients.sugar, amount: 2),
+      IngredientAmount(ingredient: Ingredients.water, amount: 1),
+    ],
+    outputIngredient: Ingredient(name: 'Mild Lemonade Pitcher'),
+  );
+
+  static final Recipe refreshingLemonade = Recipe(
+    name: 'Refreshing Lemonade',
+    requiredIngredients: [
+      IngredientAmount(ingredient: Ingredients.lemon, amount: 1),
+      IngredientAmount(ingredient: Ingredients.sugar, amount: 1),
+      IngredientAmount(ingredient: Ingredients.ice, amount: 2),
+      IngredientAmount(ingredient: Ingredients.water, amount: 1),
+    ],
+    outputIngredient: Ingredient(name: 'Refreshing Lemonade Pitcher'),
+  );
+
+  static List<Recipe> get all => [
+        sweetLemonade,
+        mildLemonade,
+        refreshingLemonade,
+      ];
 }
