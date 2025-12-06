@@ -20,6 +20,7 @@ void main() {
     });
 
     customer = Customer(
+      name: 'Test Buyer',
       wallet: customerWallet,
       inventory: customerInventory,
       wantedItem: IngredientAmount(ingredient: Ingredients.lemon, amount: 2),
@@ -76,6 +77,7 @@ void main() {
     test('transaction fails if seller has insufficient stock', () {
         // Set up customer wanting more than seller has
         customer = Customer(
+            name: 'Greedy Buyer',
             wallet: customerWallet,
             inventory: customerInventory,
             wantedItem: IngredientAmount(ingredient: Ingredients.lemon, amount: 11), // Seller has 10

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'buy_ingredients_screen.dart';
 import 'prepare_lemonade_screen.dart';
+import 'sell_lemonade_screen.dart';
 import 'view_models/game_view_model.dart';
 
 class GameMenuScreen extends StatelessWidget {
@@ -50,7 +51,11 @@ class GameMenuScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                 // TODO: Implement Sell Lemonade
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SellLemonadeScreen(),
+                  ),
+                );
               },
               child: const Text('Sell Lemonade'),
             ),

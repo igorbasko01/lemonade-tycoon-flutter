@@ -58,4 +58,9 @@ class Shop {
 
     return ShopTransactionResult.success;
   }
+
+  void updatePrice(Ingredient item, double price) {
+    if (price < 0) return;
+    prices[item] = price;
+  }
 }

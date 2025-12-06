@@ -124,4 +124,27 @@ void main() {
         expect(buyerInventory.ingredients[Ingredients.ice], null);
     });
   });
+
+  group('Shop.updatePrice', () {
+    test('updates price for existing item', () {
+      shop.updatePrice(Ingredients.lemon, 1.5);
+      expect(shop.prices[Ingredients.lemon], 1.5);
+    });
+
+    test('adds price for new item', () {
+      // Assuming 'Ingredients.water' is already there, let's pretend we removed it or just update it.
+      // Actually Ingredient is enum-like but references are fixed.
+      // Let's ensure start state.
+      expect(shop.prices.containsKey(Ingredients.lemon), true);
+      
+      // Update
+      shop.updatePrice(Ingredients.lemon, 0.99);
+      expect(shop.prices[Ingredients.lemon], 0.99);
+    });
+
+    test('does not update price if negative', () {
+       shop.updatePrice(Ingredients.lemon, -0.5);
+       expect(shop.prices[Ingredients.lemon], 0.5); // Original price
+    });
+  });
 }

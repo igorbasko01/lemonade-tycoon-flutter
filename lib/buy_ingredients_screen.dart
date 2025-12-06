@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'models/ingredients.dart';
 import 'view_models/game_view_model.dart';
 
 class BuyIngredientsScreen extends StatelessWidget {

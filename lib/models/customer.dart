@@ -9,11 +9,13 @@ enum PurchaseResult {
 }
 
 class Customer {
+  final String name;
   final Wallet wallet;
   final Inventory inventory;
   final IngredientAmount wantedItem;
 
   Customer({
+    required this.name,
     required this.wallet,
     required this.inventory,
     required this.wantedItem,
