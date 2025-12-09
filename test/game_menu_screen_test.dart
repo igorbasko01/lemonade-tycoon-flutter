@@ -6,7 +6,9 @@ import 'package:lemonade_tycoon/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('GameMenuScreen displays three buttons and balance', (WidgetTester tester) async {
+  testWidgets('GameMenuScreen displays three buttons and balance', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       ChangeNotifierProvider(
         create: (_) => GameViewModel(),
@@ -17,10 +19,13 @@ void main() {
     expect(find.text('Balance: \$10.00'), findsOneWidget);
     expect(find.text('Buy Ingredients'), findsOneWidget);
     expect(find.text('Prepare Lemonade'), findsOneWidget);
-    expect(find.text('Sell Lemonade'), findsOneWidget);
+    expect(find.text('Set Prices'), findsOneWidget);
+    expect(find.text('Start Day'), findsOneWidget);
   });
 
-  testWidgets('WelcomeScreen navigates to GameMenuScreen on tap', (WidgetTester tester) async {
+  testWidgets('WelcomeScreen navigates to GameMenuScreen on tap', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       ChangeNotifierProvider(
         create: (_) => GameViewModel(),

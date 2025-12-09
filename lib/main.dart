@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lemonade_tycoon/view_models/game_view_model.dart';
 import 'package:provider/provider.dart';
-import 'view_models/game_view_model.dart';
-import 'welcome_screen.dart';
+import 'game_screen.dart';
 
 void main() {
   runApp(const LemonadeTycoonApp());
@@ -20,7 +20,7 @@ class LemonadeTycoonApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow),
           useMaterial3: true,
         ),
-        home: const WelcomeScreen(),
+        home: const GameScreen(),
       ),
     );
   }

@@ -7,12 +7,30 @@ import '../models/recipes.dart';
 import '../models/shop.dart';
 import '../models/wallet.dart';
 
+import '../models/game_manager.dart';
+import '../services/simulation_service.dart';
+
 class GameViewModel extends ChangeNotifier {
   late final Player _player;
+  late final GameManager _gameManager;
+  late final SimulationService _simulationService;
 
   late final Shop _supplier;
 
-  GameViewModel({Player? player, Shop? supplier}) {
+  GameViewModel({
+    Player? player,
+    Shop? supplier,
+    GameManager? gameManager,
+    SimulationService? simulationService,
+  }) {
+    _gameManager = gameManager ?? GameManager();
+    _simulationService = simulationService ?? SimulationService();
+
+    // If we are starting fresh (Day 0), begin the morning of Day 1
+    if (_gameManager.currentDay == 0) {
+      _gameManager.startMorning();
+    }
+
     if (player != null) {
       _player = player;
     } else {
@@ -22,23 +40,29 @@ class GameViewModel extends ChangeNotifier {
         wallet: Wallet(10.0), // Starting balance
       );
       // We need to ensure the player has a shop to store ingredients
-      _player.addShop(Shop(
-        inventory: Inventory(ingredients: {}),
-        wallet: Wallet(0.0), // Shop starts with 0 funds, player transfers money
-        prices: {},
-      ));
+      _player.addShop(
+        Shop(
+          inventory: Inventory(ingredients: {}),
+          wallet: Wallet(
+            0.0,
+          ), // Shop starts with 0 funds, player transfers money
+          prices: {},
+        ),
+      );
     }
 
     if (supplier != null) {
       _supplier = supplier;
     } else {
       _supplier = Shop(
-        inventory: Inventory(ingredients: {
-          Ingredients.lemon: 1000,
-          Ingredients.sugar: 1000,
-          Ingredients.ice: 1000,
-          Ingredients.water: 1000,
-        }),
+        inventory: Inventory(
+          ingredients: {
+            Ingredients.lemon: 1000,
+            Ingredients.sugar: 1000,
+            Ingredients.ice: 1000,
+            Ingredients.water: 1000,
+          },
+        ),
         wallet: Wallet(0.0),
         prices: {
           Ingredients.lemon: 0.5,
@@ -48,19 +72,21 @@ class GameViewModel extends ChangeNotifier {
         },
       );
     }
-    
+
     generateCustomers();
   }
 
   double get balance => _player.wallet.balance;
-  
+
+  GameManager get gameManager => _gameManager;
+
   // Expose supplier data
   Map<Ingredient, double> get supplierPrices => _supplier.prices;
-  
+
   // Expose player's main shop inventory (assuming first shop is main)
-  // If player has no shops, we return empty map or handle error. 
+  // If player has no shops, we return empty map or handle error.
   // Based on init above, player should have a shop.
-  Map<Ingredient, int> get playerInventory => 
+  Map<Ingredient, int> get playerInventory =>
       _player.shops.isNotEmpty ? _player.shops.first.inventory.ingredients : {};
 
   List<Recipe> get recipes => Recipes.all;
@@ -73,7 +99,7 @@ class GameViewModel extends ChangeNotifier {
 
   void prepare(Recipe recipe) {
     if (_player.shops.isEmpty) return;
-    
+
     // We assume production happens in the main shop for now
     if (_player.produce(recipe, _player.shops.first)) {
       notifyListeners();
@@ -85,56 +111,63 @@ class GameViewModel extends ChangeNotifier {
 
     final targetShop = _player.shops.first;
     final item = IngredientAmount(ingredient: ingredient, amount: 1);
-    
 
     final result = _player.buyForShop(
-       supplier: _supplier, 
-       targetShop: targetShop, 
-       item: item,
-       fundsSource: _player.wallet, // Pay directly from player wallet
-     );
+      supplier: _supplier,
+      targetShop: targetShop,
+      item: item,
+      fundsSource: _player.wallet, // Pay directly from player wallet
+    );
 
-     if (result == ShopTransactionResult.success) {
-       notifyListeners();
-     }
+    if (result == ShopTransactionResult.success) {
+      notifyListeners();
+    }
   }
-
 
   List<Customer> _customers = [];
   List<Customer> get customers => List.unmodifiable(_customers);
 
   void generateCustomers() {
-     // Simple generator for now
-     // In a real game this would be more complex
-     _customers = [
-       Customer(
-         name: 'Alice',
-         wallet: Wallet(5.0),
-         inventory: Inventory(ingredients: {}),
-         wantedItem: IngredientAmount(ingredient: Recipes.sweetLemonade.outputIngredient, amount: 1),
-       ),
-       Customer(
-         name: 'Bob',
-         wallet: Wallet(3.0),
-         inventory: Inventory(ingredients: {}),
-         wantedItem: IngredientAmount(ingredient: Recipes.mildLemonade.outputIngredient, amount: 1),
-       ),
-       Customer(
-          name: 'Charlie',
-          wallet: Wallet(4.0),
-          inventory: Inventory(ingredients: {}),
-          wantedItem: IngredientAmount(ingredient: Recipes.refreshingLemonade.outputIngredient, amount: 1),
-       ),
-     ];
+    // Simple generator for now
+    // In a real game this would be more complex
+    _customers = [
+      Customer(
+        name: 'Alice',
+        wallet: Wallet(5.0),
+        inventory: Inventory(ingredients: {}),
+        wantedItem: IngredientAmount(
+          ingredient: Recipes.sweetLemonade.outputIngredient,
+          amount: 1,
+        ),
+      ),
+      Customer(
+        name: 'Bob',
+        wallet: Wallet(3.0),
+        inventory: Inventory(ingredients: {}),
+        wantedItem: IngredientAmount(
+          ingredient: Recipes.mildLemonade.outputIngredient,
+          amount: 1,
+        ),
+      ),
+      Customer(
+        name: 'Charlie',
+        wallet: Wallet(4.0),
+        inventory: Inventory(ingredients: {}),
+        wantedItem: IngredientAmount(
+          ingredient: Recipes.refreshingLemonade.outputIngredient,
+          amount: 1,
+        ),
+      ),
+    ];
   }
 
-  Map<Ingredient, double> get sellingPrices => 
-    _player.shops.isNotEmpty ? _player.shops.first.prices : {};
+  Map<Ingredient, double> get sellingPrices =>
+      _player.shops.isNotEmpty ? _player.shops.first.prices : {};
 
   void updatePrice(Ingredient item, double newPrice) {
     if (_player.shops.isEmpty) return;
     if (newPrice < 0) return;
-    
+
     // Create new map to trigger listeners
     final shop = _player.shops.first;
     shop.updatePrice(item, newPrice);
@@ -142,17 +175,36 @@ class GameViewModel extends ChangeNotifier {
   }
 
   void sellToCustomer(Customer customer) {
-     if (_player.shops.isEmpty) return;
-     final shop = _player.shops.first;
+    if (_player.shops.isEmpty) return;
+    final shop = _player.shops.first;
 
-     final result = _player.sellToCustomer(
-       shop: shop,
-       customer: customer,
-     );
+    final result = _player.sellToCustomer(shop: shop, customer: customer);
 
-     if (result == ShopTransactionResult.success) {
-       _customers.remove(customer);
-       notifyListeners();
-     }
+    if (result == ShopTransactionResult.success) {
+      _customers.remove(customer);
+      notifyListeners();
+    }
+  }
+
+  void startDaySimulation() {
+    if (_player.shops.isEmpty) return;
+
+    _gameManager.startDay();
+    notifyListeners(); // Update UI to show "Day" or "Simulation in progress"
+
+    // Run instant simulation
+    final report = _simulationService.simulateDay(
+      player: _player,
+      shop: _player.shops.first,
+      dayNumber: _gameManager.currentDay,
+    );
+
+    _gameManager.endDay(report);
+    notifyListeners();
+  }
+
+  void nextMorning() {
+    _gameManager.startMorning();
+    notifyListeners();
   }
 }

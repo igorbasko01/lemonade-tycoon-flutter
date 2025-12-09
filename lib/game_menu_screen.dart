@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'buy_ingredients_screen.dart';
 import 'prepare_lemonade_screen.dart';
-import 'sell_lemonade_screen.dart';
+import 'set_prices_screen.dart';
 import 'view_models/game_view_model.dart';
 
 class GameMenuScreen extends StatelessWidget {
@@ -12,7 +12,11 @@ class GameMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lemonade Tycoon'),
+        title: Consumer<GameViewModel>(
+          builder: (context, viewModel, child) {
+            return Text('Day ${viewModel.gameManager.currentDay} - Morning');
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -53,11 +57,33 @@ class GameMenuScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const SellLemonadeScreen(),
+                    builder: (context) => const SetPricesScreen(),
                   ),
                 );
               },
-              child: const Text('Sell Lemonade'),
+              child: const Text('Set Prices'),
+            ),
+            const SizedBox(height: 48),
+            Consumer<GameViewModel>(
+              builder: (context, viewModel, child) {
+                return ElevatedButton(
+                  onPressed: () {
+                    viewModel.startDaySimulation();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text(
+                    'Start Day',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                );
+              },
             ),
           ],
         ),

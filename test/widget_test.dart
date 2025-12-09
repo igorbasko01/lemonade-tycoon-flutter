@@ -8,7 +8,8 @@ void main() {
     await tester.pumpWidget(const LemonadeTycoonApp());
 
     // Verify that our title is present.
-    expect(find.text('Lemonade Tycoon'), findsOneWidget);
-    expect(find.text('Start Game'), findsOneWidget);
+    // Verify that the Game Menu Screen is shown
+    expect(find.text('Day 1 - Morning'), findsOneWidget);
+    expect(find.text('Start Day'), findsOneWidget);
   });
 }
