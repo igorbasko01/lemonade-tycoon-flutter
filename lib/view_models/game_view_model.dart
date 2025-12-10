@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import '../models/customer.dart';
 import '../models/ingredients.dart';
 import '../models/inventory.dart';
 import '../models/player.dart';
@@ -72,8 +71,6 @@ class GameViewModel extends ChangeNotifier {
         },
       );
     }
-
-    generateCustomers();
   }
 
   double get balance => _player.wallet.balance;
@@ -124,43 +121,6 @@ class GameViewModel extends ChangeNotifier {
     }
   }
 
-  List<Customer> _customers = [];
-  List<Customer> get customers => List.unmodifiable(_customers);
-
-  void generateCustomers() {
-    // Simple generator for now
-    // In a real game this would be more complex
-    _customers = [
-      Customer(
-        name: 'Alice',
-        wallet: Wallet(5.0),
-        inventory: Inventory(ingredients: {}),
-        wantedItem: IngredientAmount(
-          ingredient: Recipes.sweetLemonade.outputIngredient,
-          amount: 1,
-        ),
-      ),
-      Customer(
-        name: 'Bob',
-        wallet: Wallet(3.0),
-        inventory: Inventory(ingredients: {}),
-        wantedItem: IngredientAmount(
-          ingredient: Recipes.mildLemonade.outputIngredient,
-          amount: 1,
-        ),
-      ),
-      Customer(
-        name: 'Charlie',
-        wallet: Wallet(4.0),
-        inventory: Inventory(ingredients: {}),
-        wantedItem: IngredientAmount(
-          ingredient: Recipes.refreshingLemonade.outputIngredient,
-          amount: 1,
-        ),
-      ),
-    ];
-  }
-
   Map<Ingredient, double> get sellingPrices =>
       _player.shops.isNotEmpty ? _player.shops.first.prices : {};
 
@@ -172,18 +132,6 @@ class GameViewModel extends ChangeNotifier {
     final shop = _player.shops.first;
     shop.updatePrice(item, newPrice);
     notifyListeners();
-  }
-
-  void sellToCustomer(Customer customer) {
-    if (_player.shops.isEmpty) return;
-    final shop = _player.shops.first;
-
-    final result = _player.sellToCustomer(shop: shop, customer: customer);
-
-    if (result == ShopTransactionResult.success) {
-      _customers.remove(customer);
-      notifyListeners();
-    }
   }
 
   void startDaySimulation() {
