@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lemonade_tycoon/models/game_manager.dart';
 import 'package:lemonade_tycoon/screens/game_menu_screen.dart';
 import 'package:lemonade_tycoon/view_models/game_view_model.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ void main() {
   ) async {
     await tester.pumpWidget(
       ChangeNotifierProvider(
-        create: (_) => GameViewModel(),
+        create: (_) => GameViewModel(gameManager: GameManager()),
         child: const MaterialApp(home: GameMenuScreen()),
       ),
     );

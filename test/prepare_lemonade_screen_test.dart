@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lemonade_tycoon/models/game_manager.dart';
 import 'package:lemonade_tycoon/models/ingredients.dart';
 import 'package:lemonade_tycoon/models/inventory.dart';
 import 'package:lemonade_tycoon/models/player.dart';
@@ -32,7 +33,7 @@ void main() {
 
     await tester.pumpWidget(
       ChangeNotifierProvider(
-        create: (_) => GameViewModel(player: player),
+        create: (_) => GameViewModel(gameManager: GameManager(player: player)),
         child: const MaterialApp(home: PrepareLemonadeScreen()),
       ),
     );
@@ -101,7 +102,7 @@ void main() {
 
     await tester.pumpWidget(
       ChangeNotifierProvider(
-        create: (_) => GameViewModel(player: player),
+        create: (_) => GameViewModel(gameManager: GameManager(player: player)),
         child: const MaterialApp(home: PrepareLemonadeScreen()),
       ),
     );
