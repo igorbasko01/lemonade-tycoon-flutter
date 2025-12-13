@@ -36,10 +36,9 @@ class Recipe {
     }
 
     // Add product
-    inventory.addIngredient(IngredientAmount(
-      ingredient: outputIngredient,
-      amount: 1,
-    ));
+    inventory.addIngredient(
+      IngredientAmount(ingredient: outputIngredient, amount: 1),
+    );
 
     return true;
   }
@@ -53,7 +52,7 @@ class Recipes {
       IngredientAmount(ingredient: Ingredients.sugar, amount: 4),
       IngredientAmount(ingredient: Ingredients.water, amount: 1),
     ],
-    outputIngredient: Ingredient(name: 'Sweet Lemonade Pitcher'),
+    outputIngredient: Ingredient(name: 'Sweet Lemonade'),
   );
 
   static final Recipe mildLemonade = Recipe(
@@ -63,7 +62,7 @@ class Recipes {
       IngredientAmount(ingredient: Ingredients.sugar, amount: 2),
       IngredientAmount(ingredient: Ingredients.water, amount: 1),
     ],
-    outputIngredient: Ingredient(name: 'Mild Lemonade Pitcher'),
+    outputIngredient: Ingredient(name: 'Mild Lemonade'),
   );
 
   static final Recipe refreshingLemonade = Recipe(
@@ -74,12 +73,12 @@ class Recipes {
       IngredientAmount(ingredient: Ingredients.ice, amount: 2),
       IngredientAmount(ingredient: Ingredients.water, amount: 1),
     ],
-    outputIngredient: Ingredient(name: 'Refreshing Lemonade Pitcher'),
+    outputIngredient: Ingredient(name: 'Refreshing Lemonade'),
   );
 
   static List<Recipe> get all => [
-        sweetLemonade,
-        mildLemonade,
-        refreshingLemonade,
-      ];
+    sweetLemonade,
+    mildLemonade,
+    refreshingLemonade,
+  ];
 }

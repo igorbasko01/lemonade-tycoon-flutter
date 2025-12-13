@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'view_models/game_view_model.dart';
+import '../view_models/game_view_model.dart';
 
 class SetPricesScreen extends StatelessWidget {
   const SetPricesScreen({super.key});

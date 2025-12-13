@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'buy_ingredients_screen.dart';
 import 'prepare_lemonade_screen.dart';
 import 'set_prices_screen.dart';
-import 'view_models/game_view_model.dart';
+import '../view_models/game_view_model.dart';
 
 class GameMenuScreen extends StatelessWidget {
   const GameMenuScreen({super.key});

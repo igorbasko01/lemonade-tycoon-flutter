@@ -5,7 +5,7 @@ import 'package:lemonade_tycoon/models/player.dart';
 import 'package:lemonade_tycoon/models/recipes.dart';
 import 'package:lemonade_tycoon/models/shop.dart';
 import 'package:lemonade_tycoon/models/wallet.dart';
-import 'package:lemonade_tycoon/set_prices_screen.dart';
+import 'package:lemonade_tycoon/screens/set_prices_screen.dart';
 import 'package:lemonade_tycoon/view_models/game_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -29,9 +29,9 @@ void main() {
       ),
     );
 
-    expect(find.text('Sweet Lemonade Pitcher'), findsOneWidget);
-    expect(find.text('Mild Lemonade Pitcher'), findsOneWidget);
-    expect(find.text('Refreshing Lemonade Pitcher'), findsOneWidget);
+    expect(find.text('Sweet Lemonade'), findsOneWidget);
+    expect(find.text('Mild Lemonade'), findsOneWidget);
+    expect(find.text('Refreshing Lemonade'), findsOneWidget);
   });
 
   testWidgets('Updating price updates state', (WidgetTester tester) async {

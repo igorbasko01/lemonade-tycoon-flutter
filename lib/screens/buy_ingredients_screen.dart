@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'view_models/game_view_model.dart';
+import '../view_models/game_view_model.dart';
 
 class BuyIngredientsScreen extends StatelessWidget {
   const BuyIngredientsScreen({super.key});
@@ -8,9 +8,7 @@ class BuyIngredientsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Buy Ingredients'),
-      ),
+      appBar: AppBar(title: const Text('Buy Ingredients')),
       body: Consumer<GameViewModel>(
         builder: (context, viewModel, child) {
           final supplierPrices = viewModel.supplierPrices;
@@ -33,20 +31,22 @@ class BuyIngredientsScreen extends StatelessWidget {
                     final price = supplierPrices[ingredient]!;
                     final ownedAmount = playerInventory[ingredient] ?? 0;
 
-                      final canAfford = viewModel.balance >= price;
+                    final canAfford = viewModel.balance >= price;
 
-                      return ListTile(
-                        title: Text(ingredient.name.toUpperCase()),
-                        subtitle: Text('Price: \$${price.toStringAsFixed(2)} | Owned: $ownedAmount'),
-                        trailing: ElevatedButton(
-                          onPressed: canAfford
-                              ? () {
-                                  viewModel.buyIngredient(ingredient);
-                                }
-                              : null,
-                          child: const Text('Buy 1'),
-                        ),
-                      );
+                    return ListTile(
+                      title: Text(ingredient.name.toUpperCase()),
+                      subtitle: Text(
+                        'Price: \$${price.toStringAsFixed(2)} | Owned: $ownedAmount',
+                      ),
+                      trailing: ElevatedButton(
+                        onPressed: canAfford
+                            ? () {
+                                viewModel.buyIngredient(ingredient);
+                              }
+                            : null,
+                        child: const Text('Buy 1'),
+                      ),
+                    );
                   },
                 ),
               ),

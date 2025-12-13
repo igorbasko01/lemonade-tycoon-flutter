@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'view_models/game_view_model.dart';
+import '../view_models/game_view_model.dart';
 
 class PrepareLemonadeScreen extends StatelessWidget {
   const PrepareLemonadeScreen({super.key});
@@ -8,9 +8,7 @@ class PrepareLemonadeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Prepare Lemonade'),
-      ),
+      appBar: AppBar(title: const Text('Prepare Lemonade')),
       body: Consumer<GameViewModel>(
         builder: (context, viewModel, child) {
           final recipes = viewModel.recipes;
@@ -38,7 +36,8 @@ class PrepareLemonadeScreen extends StatelessWidget {
                           ),
                           Text(
                             'In Stock: ${playerInventory[recipe.outputIngredient] ?? 0}',
-                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),

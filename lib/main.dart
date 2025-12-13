@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lemonade_tycoon/view_models/game_view_model.dart';
 import 'package:provider/provider.dart';
-import 'game_screen.dart';
+import 'screens/game_screen.dart';
 
 void main() {
   runApp(const LemonadeTycoonApp());
