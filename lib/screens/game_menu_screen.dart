@@ -24,9 +24,22 @@ class GameMenuScreen extends StatelessWidget {
           children: [
             Consumer<GameViewModel>(
               builder: (context, viewModel, child) {
-                return Text(
-                  'Balance: \$${viewModel.balance.toStringAsFixed(2)}',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                return Column(
+                  children: [
+                    Text(
+                      'Balance: \$${viewModel.balance.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Weather: ${viewModel.currentWeather.displayName}',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    Text(
+                      'Traffic: ${(viewModel.currentWeather.customerMultiplier * 100).toInt()}%',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
                 );
               },
             ),

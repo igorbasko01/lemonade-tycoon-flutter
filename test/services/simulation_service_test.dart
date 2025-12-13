@@ -5,7 +5,8 @@ import 'package:lemonade_tycoon/models/player.dart';
 import 'package:lemonade_tycoon/models/recipes.dart';
 import 'package:lemonade_tycoon/models/shop.dart';
 import 'package:lemonade_tycoon/models/wallet.dart';
-import 'package:lemonade_tycoon/services/simulation_service.dart';
+import 'package:lemonade_tycoon/models/weather.dart';
+import 'package:lemonade_tycoon/services/simulation/simulation_service.dart';
 
 void main() {
   late SimulationService service;
@@ -35,6 +36,7 @@ void main() {
       player: player,
       shop: shop,
       dayNumber: 1,
+      weather: WeatherType.sunny,
     );
 
     // We can't predict exact numbers due to randomness, but:
@@ -71,6 +73,7 @@ void main() {
       player: player,
       shop: shop,
       dayNumber: 1,
+      weather: WeatherType.sunny,
     );
 
     expect(report2.endingFunds, greaterThan(report2.startingFunds));
@@ -92,6 +95,7 @@ void main() {
       player: player,
       shop: shop,
       dayNumber: 1,
+      weather: WeatherType.sunny,
     );
 
     expect(report.startingFunds, 100.0);
@@ -112,6 +116,7 @@ void main() {
       player: player,
       shop: shop,
       dayNumber: 1,
+      weather: WeatherType.sunny,
     );
 
     expect(report.startingFunds, 100.0);
@@ -143,6 +148,7 @@ void main() {
         player: player,
         shop: shop,
         dayNumber: 1,
+        weather: WeatherType.sunny,
       );
 
       // Verify correct sales

@@ -3,16 +3,19 @@ import '../models/ingredients.dart';
 import '../models/inventory.dart';
 import '../models/player.dart';
 import '../models/recipes.dart';
+import '../models/game_manager.dart';
 import '../models/shop.dart';
 import '../models/wallet.dart';
+import '../models/weather.dart';
 
-import '../models/game_manager.dart';
-import '../services/simulation_service.dart';
+import '../services/simulation/simulation_service.dart';
+import '../services/weather_service.dart';
 
 class GameViewModel extends ChangeNotifier {
   late final Player _player;
   late final GameManager _gameManager;
   late final SimulationService _simulationService;
+  late final WeatherService _weatherService;
 
   late final Shop _supplier;
 
@@ -21,13 +24,16 @@ class GameViewModel extends ChangeNotifier {
     Shop? supplier,
     GameManager? gameManager,
     SimulationService? simulationService,
+    WeatherService? weatherService,
   }) {
     _gameManager = gameManager ?? GameManager();
     _simulationService = simulationService ?? SimulationService();
+    _weatherService = weatherService ?? WeatherService();
 
     // If we are starting fresh (Day 0), begin the morning of Day 1
     if (_gameManager.currentDay == 0) {
       _gameManager.startMorning();
+      _weatherService.startDay(); // Ensure weather is set for Day 1
     }
 
     if (player != null) {
@@ -76,6 +82,7 @@ class GameViewModel extends ChangeNotifier {
   double get balance => _player.wallet.balance;
 
   GameManager get gameManager => _gameManager;
+  WeatherType get currentWeather => _weatherService.currentWeather;
 
   // Expose supplier data
   Map<Ingredient, double> get supplierPrices => _supplier.prices;
@@ -145,6 +152,7 @@ class GameViewModel extends ChangeNotifier {
       player: _player,
       shop: _player.shops.first,
       dayNumber: _gameManager.currentDay,
+      weather: _weatherService.currentWeather,
     );
 
     _gameManager.endDay(report);
@@ -153,6 +161,7 @@ class GameViewModel extends ChangeNotifier {
 
   void nextMorning() {
     _gameManager.startMorning();
+    _weatherService.startDay();
     notifyListeners();
   }
 }

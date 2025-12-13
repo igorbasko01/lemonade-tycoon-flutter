@@ -1,23 +1,21 @@
 import 'dart:math';
 
-import '../models/customer.dart';
-import '../models/daily_report.dart';
-import '../models/ingredients.dart';
-import '../models/inventory.dart';
-import '../models/player.dart';
+import '../../../models/daily_report.dart';
+import '../../../models/ingredients.dart';
+import '../../../models/customer.dart';
+import '../../../models/inventory.dart';
+import '../../../models/wallet.dart';
+import '../../../models/shop.dart';
+import 'simulation_strategy.dart';
 
-import '../models/shop.dart';
-import '../models/wallet.dart';
-
-class SimulationService {
+class InventoryBasedSimulationStrategy implements SimulationStrategy {
   final Random _random = Random();
 
-  DailyReport simulateDay({
-    required Player player,
-    required Shop shop,
-    required int dayNumber,
-  }) {
-    final double startingFunds = player.wallet.balance;
+  @override
+  DailyReport run(SimulationContext context) {
+    final player = context.player;
+    final shop = context.shop;
+    final startingFunds = player.wallet.balance;
     int customersServed = 0;
     int potentialCustomers;
     Map<Ingredient, int> itemsSold = {};
@@ -50,7 +48,7 @@ class SimulationService {
     }
 
     return DailyReport(
-      dayNumber: dayNumber,
+      dayNumber: context.dayNumber,
       startingFunds: startingFunds,
       endingFunds: player.wallet.balance,
       customersServed: customersServed,
@@ -62,7 +60,7 @@ class SimulationService {
   Customer _createCustomerWithWant(Ingredient want) {
     return Customer(
       name: "Customer ${_random.nextInt(1000)}",
-      wallet: Wallet(10.0 + _random.nextInt(50).toDouble()), // Has $10-60
+      wallet: Wallet(10.0 + _random.nextInt(50).toDouble()),
       inventory: Inventory(ingredients: {}),
       wantedItem: IngredientAmount(ingredient: want, amount: 1),
     );
